@@ -2,6 +2,7 @@ from typing import List, Sequence, Callable, Tuple, Dict
 import os
 import re
 import subprocess
+import csv
 
 def save_in_text(output_file: str, values: List[str]):
     with open(output_file, "w", encoding="utf-8") as f:
@@ -74,7 +75,7 @@ def exclude_file_with_regex(regex: str, files: List[str]) -> List[str]:
 
 
 def save_in_csv(output_file: str, headers: List[str], data: List[Dict]):
-    with open(output_file, "w", newline="", encoding="utf-8"):
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
         writer.writerows(data)
