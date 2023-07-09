@@ -37,10 +37,9 @@ def search_regex(regex: str, files: List[str], split_result=False, skip_empty=Tr
 
 
 def run_filter_pipeline(elements: List["str"], pipelines_filter: List[Callable]) -> List[str]:
-    result = elements
     for pipeline in pipelines_filter:
-        result = filter(pipeline, result)
-    return list(result)
+        elements = filter(pipeline, elements)
+    return list(elements)
 
 
 def run_replacement(elements: List["str"], replacements: Tuple[Tuple[str, str]], use_regex=False, count=0) -> List[str]:
@@ -48,17 +47,18 @@ def run_replacement(elements: List["str"], replacements: Tuple[Tuple[str, str]],
     The format of tuple of replacement is (pattern, replace)
     
     """
+    results = elements[:]
     for pattern, replace in replacements:
         if use_regex:
             regex = re.compile(pattern)
             
-        for i in range(len(elements)):
+        for i in range(len(results)):
             if use_regex:
-                elements[i] = regex.sub(replace, elements[i], count=count)
+                results[i] = regex.sub(replace, results[i], count=count)
             else:
-                elements[i] = elements[i].replace(pattern, replace)
+                results[i] = results[i].replace(pattern, replace)
             
-    return elements
+    return results
 
 
 def filter_file_with_regex(regex: str, files: List[str]) -> List[str]:
