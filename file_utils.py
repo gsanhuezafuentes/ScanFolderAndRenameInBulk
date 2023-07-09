@@ -82,6 +82,15 @@ def save_in_csv(output_file: str, headers: List[str], data: List[Dict]):
         writer.writerows(data)
 
 
+def load_csv(filename: str, class_object: Callable) -> List[object]:
+    results = []
+    with open(filename, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            results.append(class_object(**row))
+    return results
+
+
 def exclude_paths_in_exclude_list(filename: str, excluded_paths: Set[str]):
     for excluded_path in excluded_paths:
         if excluded_path in filename:
