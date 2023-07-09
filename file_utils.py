@@ -1,8 +1,9 @@
-from typing import List, Sequence, Callable, Tuple, Dict
+from typing import List, Sequence, Callable, Tuple, Dict, Set
 import os
 import re
 import subprocess
 import csv
+
 
 def save_in_text(output_file: str, values: List[str]):
     with open(output_file, "w", encoding="utf-8") as f:
@@ -79,3 +80,10 @@ def save_in_csv(output_file: str, headers: List[str], data: List[Dict]):
         writer = csv.DictWriter(f, fieldnames=headers)
         writer.writeheader()
         writer.writerows(data)
+
+
+def exclude_paths_in_exclude_list(filename: str, excluded_paths: Set[str]):
+    for excluded_path in excluded_paths:
+        if excluded_path in filename:
+            return False
+    return True
